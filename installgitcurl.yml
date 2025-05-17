@@ -1,0 +1,37 @@
+---
+- name: Install git and curl on Ubuntu servers
+  hosts: myhosts
+  become: true
+
+  tasks:
+    - name: Update apt package list
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install git
+      ansible.builtin.apt:
+        name: git
+        state: present
+
+    - name: Install curl
+      ansible.builtin.apt:
+        name: curl
+        state: present
+
+    - name: Validate git installation
+      ansible.builtin.command:
+        cmd: git --version
+      register: git_version
+
+    - name: Print git version
+      ansible.builtin.debug:
+        msg: "Git version: {{ git_version.stdout }}"
+
+    - name: Validate curl installation
+      ansible.builtin.command:
+        cmd: curl --version
+      register: curl_version
+
+    - name: Print curl version
+      ansible.builtin.debug:
+        msg: "Curl version: {{ curl_version.stdout }}"
