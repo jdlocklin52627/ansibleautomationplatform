@@ -1,0 +1,26 @@
+---
+- name: Gather Node Specifications
+  hosts: all
+  gather_facts: yes
+  tasks:
+
+    - name: Gather CPU Info
+      debug:
+        msg: "{{ ansible_processor }}"
+
+    - name: Gather Memory Info
+      debug:
+        msg: "Total RAM: {{ ansible_memtotal_mb }} MB"
+
+    - name: Gather Disk Info
+      shell: df -h | grep '^/dev'
+      register: disk_info
+
+    - name: Show Disk Info
+      debug:
+        msg: "{{ disk_info.stdout_lines }}"
+
+    - name: Gather Network Interfaces
+      debug:
+        msg: "{{ ansible_interfaces }}"
+
